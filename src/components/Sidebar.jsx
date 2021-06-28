@@ -1,41 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { Nav } from "react-bootstrap";
-import ApiHelper from "../helpers/api";
+import { Link } from "react-router-dom";
+import ApiHelpers from "../helpers/api";
 import "../style/sidebar.css";
-
 const Sidebar = (props) => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    ApiHelper.Categories.all().then((mappedApiCategories) => {
+    ApiHelpers.ProductCategories.all().then((mappedApiCategories) => {
       setCategories(mappedApiCategories);
     });
-    let newobject = [{id:4}, {id:5}];
-    for (var i=0; i<10; i++)
-    {
-      console.log("i1= ",i);
-      for (var i=10; i<20; i++)
-      {
-        console.log("i2= ",i);
-      }
-    }
-    return () => {
-      newobject = [];
-    }
   }, [props]);
 
-
   return (
-    <Nav className="d-md-block bg-light sidebar">
+    <Nav className="col-md-12 d-md-block bg-light sidebar">
+      <div className="sidebar-sticky"></div>
+      <Nav.Item>
+        <Nav.Link as={Link} to={`/Home`}>Home</Nav.Link>
+      </Nav.Item>
       {categories.map((c) => (
         <Nav.Item key={c.categoryId}>
-          <Nav.Link as={Link} to={`/products/${c.categoryId}`}>
+          <Nav.Link key={c.categoryId} as={Link}  to={`/products/${c.categoryId}`}>
             {c.name}
           </Nav.Link>
         </Nav.Item>
+        
       ))}
+       
+        <Nav.Item><Nav.Link as={Link}  to={`/admin`} > Admin
+        </Nav.Link>
+        </Nav.Item>
+
     </Nav>
   );
 };
+
 export default Sidebar;
